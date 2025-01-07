@@ -8,7 +8,7 @@ headers = {
     "Content-Type": "application/json",
 }
 
-def text_to_image(text: str) -> str or None:
+def text_to_image(text: str) -> str:
     payload = {
         "style": "photorealism",
         "prompt": text,
@@ -30,8 +30,8 @@ def text_to_image(text: str) -> str or None:
             return data.get('url')
         else:
             print(f'Error while generating image text: {response.json()}')
-            return None
+            return ''
 
     except Exception as e:
         print(e)
-        return None
+        return ''

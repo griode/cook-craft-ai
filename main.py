@@ -5,6 +5,7 @@ from utils.request_header_manager import handle_options_request, handle_post_req
 from utils.image_base64 import upload_image_to_firestorage
 import json
 
+
 app = FastAPI()
 
 
@@ -13,7 +14,7 @@ class Description(BaseModel):
     language: str = "en"
 
 class Images(BaseModel):
-    images: [str]
+    images: list[str]
     language: str = "en"
 
 
@@ -31,7 +32,7 @@ async def recipe_by_description(description: Description, req: Request):
         return handle_post_request(json.loads(string_json), generate_recipe_by_description)
     else:
         return handle_invalid_method()
-
+    
 
 @app.post("/gen_witch_image")
 async def recipe_by_images(images: Images, req: Request):
