@@ -3,16 +3,15 @@ from pydantic import BaseModel
 from services.recipe_generator import generate_recipe_by_description, generate_recipe_by_images
 from utils.request_header_manager import handle_options_request, handle_post_request, handle_invalid_method
 import json
-from mangum import Mangum
 
 
 app = FastAPI()
-handlerb = Mangum(app)
 
 
 class Description(BaseModel):
     text: str
     language: str = "en"
+
 
 class Images(BaseModel):
     images: list[str]
