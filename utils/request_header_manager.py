@@ -1,4 +1,4 @@
-from fastapi import Request
+from fastapi import Request, Response
 
 # En-têtes CORS
 CORS_HEADERS = {
@@ -13,7 +13,7 @@ def handle_options_request():
     return {"message": "ok"}, 204, CORS_HEADERS
 
 
-def handle_post_request(data, data_processor):
+def handle_post_request(data, res: Response, data_processor):
     """
     Gère les requêtes POST en appelant la fonction appropriée.
 
@@ -21,18 +21,14 @@ def handle_post_request(data, data_processor):
     :param data_processor: Fonction pour traiter les données de la requête
     :return: Réponse JSON
     """
+    res.headers.update(CORS_HEADERS)
     try:
-        # Utilisation de .get pour éviter les KeyErrors
-        if not data:
-            return {"error message": "Missing 'data' in request body"}, 400, CORS_HEADERS
-
-        result = data_processor(data)
-        return result, 200, CORS_HEADERS
+       return {} #data_processor(data)
     except Exception as e:
         print(f"Error: {e}")
-        return {"error message": str(e)}, 500, CORS_HEADERS
+        return {"error message": str(e)}
 
 
-def handle_invalid_method():
+def handle_invalid_method(res: Response):
     """Gère les méthodes non supportées."""
-    return {"message": "Invalid method. Only POST is allowed."}, 405, CORS_HEADERS
+    return {"message": "Invalid method. Only POST is allowed."}

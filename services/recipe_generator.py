@@ -51,7 +51,7 @@ def add_recipe_image(json_data):
     recipes = []
     for recipe in json_data:
         recipe['index'] = random.randint(1, 20)
-        recipe['image'] = text_to_image(recipe["image_description"])
+        recipe['image'] = "" #text_to_image(recipe["image_description"])
         recipes.append(recipe)
     return recipes
 
