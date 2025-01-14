@@ -1,7 +1,6 @@
 from fastapi import FastAPI, Request, Response
 from pydantic import BaseModel
 from services.recipe_generator import generate_recipe_by_description, generate_recipe_by_images
-from utils.request_header_manager import handle_options_request, handle_post_request, handle_invalid_method
 import json
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -14,6 +13,7 @@ async def verify_api_key(request: Request, call_next):
     if api_key != 'jkhui':
         return Response(content="Unauthorized", status_code=401)
     return await call_next(request)
+
 
 app.add_middleware(
     CORSMiddleware,
@@ -40,7 +40,7 @@ def root():
 
 
 @app.post("/gen_witch_text/")
-def recipe_by_description(description: Description, req: Request, res: Response):
+def recipe_by_description(description: Description):
     string_json = description.model_dump_json()
     try:
         return generate_recipe_by_description(json.loads(string_json))
@@ -49,7 +49,7 @@ def recipe_by_description(description: Description, req: Request, res: Response)
    
     
 @app.post("/gen_witch_image/")
-def recipe_by_images(images: Images, req: Request, res: Response):
+def recipe_by_images(images: Images):
     string_json = images.model_dump_json()
     try:
         return generate_recipe_by_images(json.loads(string_json))
