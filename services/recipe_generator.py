@@ -1,15 +1,15 @@
 import base64
 import io
 import json
-import random
-from config import config
+
 import google.generativeai as genai
 from PIL import Image  # Pillow library for image manipulation
-from services.image_generator import text_to_image
+
+from config import config
 
 # Configuration of the Gemini model
 genai.configure(api_key=config.get("model_api_key"))
-model = genai.GenerativeModel("gemini-1.5-flash")
+model = genai.GenerativeModel("gemini-2.0-flash-exp")
 # format of the response from the model
 response_format = '''
 {
@@ -25,7 +25,7 @@ response_format = '''
     "cuisine": "str",
     "description": "str",
     "meal_type": "str" ("breakfast", "lunch", "dinner", "dessert"),
-    "image_description": "str" (La description de l'image doit obligatoirement être anglais),
+    "image": "str" (La description de l'image doit obligatoirement être anglais),
     "nutrition_facts": {
         "calories": "int",
         "protein": "str",
@@ -47,15 +47,6 @@ def convert_to_json(text):
     return json.loads(text)
 
 
-def add_recipe_image(json_data):
-    recipes = []
-    for recipe in json_data:
-        recipe['index'] = random.randint(1, 20)
-        recipe['image'] = "" #text_to_image(recipe["image_description"])
-        recipes.append(recipe)
-    return recipes
-
-
 # Generate a recipe based on a description
 def generate_recipe_by_description(data):
     prompt = f"""
@@ -68,10 +59,7 @@ def generate_recipe_by_description(data):
     """
 
     response = model.generate_content(prompt)
-    json_data = convert_to_json(response.text)
-    # Add recipe image
-    json_data['data'] = add_recipe_image(json_data['data'])
-    return json_data
+    return convert_to_json(response.text)
 
 
 def generate_recipe_by_images(data):
@@ -95,8 +83,4 @@ def generate_recipe_by_images(data):
 
     response = model.generate_content([prompt] + list_file)
     text = response.text
-    json_data = convert_to_json(text)
-    # Add recipe image
-    list_recipe = add_recipe_image(json_data['data'])
-    json_data['data'] = list_recipe
-    return json_data
+    return convert_to_json(text)

@@ -27,7 +27,7 @@ def text_to_image(text: str) -> str:
 
         if response.status_code == 200:
             data = response.json()
-            return data.get('url')
+            return data
         else:
             print(f'Error while generating image text: {response.json()}')
             return ''
