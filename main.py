@@ -1,5 +1,4 @@
 from datetime import datetime
-import requests
 from fastapi import FastAPI, Request, Response
 from pydantic import BaseModel
 from config import config
@@ -17,6 +16,9 @@ app = FastAPI()
 @app.middleware("http")
 async def verify_api_key(request: Request, call_next):
     api_key = request.headers.get('api-key')
+    if request.url.path == '/':
+        return await call_next(request)
+    
     if api_key != config.get('API_KEY'):
         return Response(content=json.dumps(
             {
@@ -52,7 +54,7 @@ class ImageDescription(BaseModel):
 
 @app.get("/")
 def root():
-    return {"message": "Welcome to the Recipe Generator API!"}
+    return "Welcome to the Recipe Generator monorepo!, 😇 🥙"
 
 @app.get("/server_info/")
 def get_server_info(request: Request):
