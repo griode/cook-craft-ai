@@ -11,5 +11,5 @@ class UserProvider:
 
     @staticmethod
     def get_user(user_id: str):
-        response = UserProvider.userTable.select("*").eq("id", user_id).execute()
+        response = UserProvider.userTable.select("*").eq("uid", user_id).execute()
         return response

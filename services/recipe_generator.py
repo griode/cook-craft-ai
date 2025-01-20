@@ -25,7 +25,7 @@ response_format = '''
     "cuisine": "str",
     "description": "str",
     "meal_type": "str" ("breakfast", "lunch", "dinner", "dessert"),
-    "image": "str" (La description de l'image doit obligatoirement être anglais),
+    "image": "str" (The description of the image must be in English),
     "nutrition_facts": {
         "calories": "int",
         "protein": "str",
@@ -50,12 +50,12 @@ def convert_to_json(text):
 # Generate a recipe based on a description
 def generate_recipe_by_description(data):
     prompt = f"""
-    Analyse la saisie de l'utilisateur suivante : "{data['text']}" et retourne une réponse appropriée en {data['language']} :
-    1. Si la saisie n'est pas liée à des ingrédients ou à un plat, renvoie la réponse suivante au format JSON :
-    {{"message": str,"data": []}}.
-    2. Si la saisie est pertinente et décrit des ingrédients ou un plat spécifique, renvoie une recette correspondante sous la forme d'un objet JSON :
+    Analyze the following user input: "{data['text']}" and return an appropriate response in {data['language']}:
+    1. If the input is not related to ingredients or a dish, return the following response in JSON format:
+    {{"message": str, "data": []}}.
+    2. If the input is relevant and describes specific ingredients or a dish, return a corresponding recipe in the form of a JSON object:
     {{"message": str, "data": [{response_format}]}}.
-    Note : La réponse doit être formulée dans la langue {data['language']} et ne doit être que du JSON pas un autre autre message en plus.
+    Note: The response must be formulated in the language {data['language']} and should be only JSON, not any other message.
     """
 
     response = model.generate_content(prompt)
@@ -64,14 +64,14 @@ def generate_recipe_by_description(data):
 
 def generate_recipe_by_images(data):
     prompt = f"""
-    Analyse les images suivantes et retourne les résultats sous forme de JSON :
-    1. Si l'image ne contient pas de recettes ou d'éléments utilisables pour cuisiner, retourne : 
+    Analyze the following images and return the results in JSON format:
+    1. If the image does not contain recipes or elements usable for cooking, return:
     {{"message": str, "data": []}}.
-    2. Si l'image contient une ou plusieurs recettes, retourne les recettes sous forme (pas la même recette) de tableau JSON :
+    2. If the image contains one or more recipes, return the recipes in the form of a JSON array (not the same recipe):
     [{response_format}].
-    3. Si l'image contient des fruits, légumes ou céréales, retourne exemple de recette que l'on peut cuisiner avec ces ingrédients. La réponse doit être sous forme de tableau JSON :
+    3. If the image contains fruits, vegetables, or grains, return an example recipe that can be cooked with these ingredients. The response should be in the form of a JSON array:
     {{"message": str, "data": [{response_format}, {response_format}]}}.
-    Note : Toutes les données doivent être fournies dans la langue suivante : {data['language']} et ne doit être que du JSON pas un autre autre message en plus.
+    Note: All data must be provided in the following language: {data['language']} and should be only JSON, not any other message.
     """
 
     # Convert the base64 string to image
@@ -82,5 +82,4 @@ def generate_recipe_by_images(data):
         list_file.append(image)
 
     response = model.generate_content([prompt] + list_file)
-    text = response.text
-    return convert_to_json(text)
+    return convert_to_json(response.text)
