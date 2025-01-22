@@ -1,14 +1,15 @@
+import json
 from datetime import datetime
+
 from fastapi import FastAPI, Request, Response
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
+
 from config import config
 from database.recipe_provider import RecipeProvider
 from database.user_provider import UserProvider
 from services.image_generator import text_to_image
 from services.recipe_generator import generate_recipe_by_description, generate_recipe_by_images
-import json
-from fastapi.middleware.cors import CORSMiddleware
-from services.upload_file import upload_image
 from services.upload_url_image import save_image
 
 app = FastAPI()
@@ -78,9 +79,8 @@ def recipe_by_description(description: Description):
     
 @app.post("/gen_witch_image/")
 def recipe_by_images(images: Images):
-    string_json = images.model_dump_json()
     try:
-        return generate_recipe_by_images(json.loads(string_json))
+        return generate_recipe_by_images(json.loads(images.model_dump_json()))
     except Exception as e:
         return f"Error: {e}"
 

@@ -15,6 +15,6 @@ class RecipeProvider:
         return response
 
     @staticmethod
-    def find_all(offset: int = 0, limit: int = 10) :
-        response = RecipeProvider.recipe_table.select('*').range(offset, limit).execute()
+    def find_all(offset: int = 0, limit: int = 10):
+        response = RecipeProvider.recipe_table.select('*').range(offset, limit).order('id', desc=True).execute()
         return response
