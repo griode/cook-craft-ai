@@ -13,30 +13,30 @@ model = genai.GenerativeModel("gemini-2.0-flash-exp")
 # format of the response from the model
 response_format = '''
 {
-    "recipe_name": "str",
-    "diet": "str",
-    "continent": "str"("africa", "america", "asia", "australia", "europe", "oceania"),
-    "language": "str",
-    "ingredients": ["str"],
+    "recipe_name": "string",
+    "diet": "string",
+    "continent": "string"("africa", "america", "asia", "australia", "europe", "oceania"),
+    "language": "string",
+    "ingredients": ["string"],
     "duration_to_cook": "int",
     "servings": "int",
-    "instructions": ["str"],
-    "difficulty": "str",
-    "cuisine": "str",
-    "description": "str",
-    "meal_type": "str" ("breakfast", "lunch", "dinner", "dessert"),
-    "image": "str" (The description of the image must be in English),
+    "instructions": ["string"],
+    "difficulty": "string",
+    "cuisine": "string",
+    "description": "string",
+    "meal_type": "string" ("breakfast", "lunch", "dinner", "dessert"),
+    "image": "string" (The description of the image must be in English),
     "nutrition_facts": {
-        "calories": "int",
-        "protein": "str",
-        "carbohydrates": "str",
-        "fat": "str",
-        "vitamins" : "str",
-        "minerals" : "str",
-        "dietary_fiber": "str",
-        "Sugar": "str",
-        "Salt": "str",
-        "antioxidants": "str"
+        "calories": "string",
+        "protein": "string",
+        "carbohydrates": "string",
+        "fat": "string",
+        "vitamins" : "string",
+        "minerals" : "string",
+        "dietary_fiber": "string",
+        "Sugar": "string",
+        "Salt": "string",
+        "antioxidants": "string"
     }
 }
 '''
